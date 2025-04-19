@@ -1,0 +1,33 @@
+xcp-ng-nic-labeler - Network Interface Mapping Utility for XCP-ng
+
+Copyright (c) 2025
+RP Digital Consulting LLC
+Joshua Porrata
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to use,
+copy, and modify the Software **for personal, non-commercial, or educational use**, 
+provided that the above copyright notice and this permission notice appear 
+in all copies.
+
+Redistribution in source or binary form, with or without modification, is 
+permitted **for personal or non-commercial purposes only**, provided that 
+proper attribution is included.
+
+**Commercial use, including but not limited to use in client work, consulting, 
+enterprise systems, or as part of any product or service offering, is strictly 
+prohibited without a separate commercial license.**
+
+To obtain a commercial license, contact:
+
+Joshua Porrata  
+RP Digital Consulting LLC  
+Email: joshua@rpdigitalconsulting.com, joshua.porrata@gmail.com
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING 
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+IN THE SOFTWARE.
