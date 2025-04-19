@@ -1,5 +1,8 @@
-> 🔧 Map and label NICs by interface name, MAC, PCI address, and device description — built for XCP-ng 8.3, homelabs, and
-> network documentation.
+<!--
+Title: xcp-ng-nic-labeler
+Description: Map and document physical and virtual network interfaces with PCI, MAC, and device info.
+Tags: xcp-ng, networking, bash, pci, passthrough, markdown, docker, homelab, virtualization, sysadmin
+-->
 
 # xcp-ng-nic-labeler
 
